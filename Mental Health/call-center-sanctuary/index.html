@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call Center Sanctuary</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+        body { background-color: #020617; color: #f8fafc; padding: 48px 16px; min-height: 100vh; }
+        .header { text-align: center; max-width: 600px; margin: 0 auto 48px auto; }
+        .header h1 { font-size: 32px; font-weight: bold; margin-bottom: 12px; color: #f1f5f9; }
+        .header p { font-size: 14px; color: #94a3b8; line-height: 1.6; }
+        .container { display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; max-width: 1000px; margin: 0 auto; }
+        .card { flex: 1; min-width: 320px; max-width: 440px; padding: 28px; background-color: #0f172a; border: 1px solid #1e293b; border-radius: 20px; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.5); }
+        h3 { font-size: 20px; font-weight: 600; margin-bottom: 6px; color: #f8fafc; display: flex; align-items: center; gap: 8px; }
+        .desc { font-size: 12px; color: #94a3b8; margin-bottom: 20px; }
+        textarea { Honest: complete; width: 100%; height: 140px; padding: 14px; background-color: #020617; color: #e2e8f0; border-radius: 12px; border: 1px solid #334155; resize: none; fontSize: 14px; outline: none; }
+        button { width: 100%; mt: 16px; background-color: #dc2626; color: white; padding: 14px; border-radius: 12px; cursor: pointer; border: none; font-weight: bold; font-size: 14px; margin-top: 16px; transition: background 0.2s; }
+        button:disabled { background-color: #334155; color: #64748b; cursor: not-allowed; }
+        select { width: 100%; padding: 14px; background-color: #020617; color: #e2e8f0; border-radius: 12px; border: 1px solid #334155; font-size: 14px; outline: none; cursor: pointer; }
+        .script-box { margin-top: 20px; padding: 16px; background-color: #020617; border-left: 4px solid #2dd4bf; border-radius: 0 12px 12px 0; display: none; }
+        .script-title { font-size: 12px; font-weight: bold; color: #2dd4bf; text-transform: uppercase; margin-bottom: 6px; }
+        .script-text { font-size: 14px; color: #cbd5e1; line-height: 1.5; font-style: italic; }
+        .hidden { display: none; }
+        .breathe-circle { width: 100px; height: 100px; background-color: #2dd4bf; color: #020617; font-size: 28px; font-weight: bold; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin: 32px auto; animation: pulse 4s infinite ease-in-out; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.4); } 50% { transform: scale(1.2); box-shadow: 0 0 0 20px rgba(45, 212, 191, 0); } }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Call Center Sanctuary</h1>
+        <p>Offline-ready therapeutic micro-tools built to guard agent emotional bandwidth between intense calls.</p>
+    </div>
+
+    <div class="container">
+        <!-- Module 1: The Shredder -->
+        <div class="card">
+            <div id="type-view">
+                <h3>🔥 Vent & Incinerate</h3>
+                <p class="desc">Type the toxic remarks a caller dropped on you. Shred them to erase them completely from existence.</p>
+                <textarea id="vent-input" placeholder="Type your frustration right here..." oninput="checkInput()"></textarea>
+                <button id="shred-btn" disabled onclick="startShred()">SHRED & PURGE</button>
+            </div>
+            
+            <div id="breathe-view" class="hidden" style="text-align: center;">
+                <h3>Let It Go. Breathe.</h3>
+                <p class="desc">Match your breathing cycle to the expanding ring.</p>
+                <div class="breathe-circle" id="timer">15</div>
+            </div>
+
+            <div id="done-view" class="hidden" style="text-align: center;">
+                <h3>Reset Complete</h3>
+                <p class="desc" style="margin-bottom: 24px;">You are completely detached from that client.</p>
+                <button onclick="resetShredder()" style="background-color: #334155;">Vent Fresh Frustration</button>
+            </div>
+        </div>
+
+        <!-- Module 2: Scripts -->
+        <div class="card">
+            <h3>🛡️ De-escalation Shield</h3>
+            <p class="desc">Select common customer scenarios to immediately display a copy-pasteable protective phrase.</p>
+            <select id="script-select" onchange="showScript()">
+                <option value="">-- Choose hostile profile --</option>
+                <option value="screaming">Screaming / Abusive Caller</option>
+                <option value="threats">Threatening Lawsuits / Legal Action</option>
+                <option value="personal">Personalized Insults / Attacks</option>
+            </select>
+            <div id="script-display" class="script-box">
+                <div class="script-title">Copy Script Response:</div>
+                <div id="script-content" class="script-text"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const scripts = {
+            screaming: "I hear you shouting. I completely want to get this fixed for you, but I need us to connect calmly so I do not drop any vital details. Let's walk through this.",
+            threats: "I am fully authorized to resolve this issue right here. If we change lanes into legal processing paths, our workflow tools change. Let's focus here instead.",
+            personal: "Let's direct our full focus back to tracking down your account status. My priority is getting you an answer, so let's check the record line together."
+        };
+
+        function checkInput() {
+            const txt = document.getElementById('vent-input').value;
+            document.getElementById('shred-btn').disabled = !txt.trim();
+        }
+
+        function startShred() {
+            document.getElementById('type-view').style.opacity = '0.1';
+            setTimeout(() => {
+                document.getElementById('type-view').classList.add('hidden');
+                document.getElementById('type-view').style.opacity = '1';
+                document.getElementById('breathe-view').classList.remove('hidden');
+                startTimer();
+            }, 800);
+        }
+
+        function startTimer() {
+            let count = 15;
+            const timerEl = document.getElementById('timer');
+            const interval = setInterval(() => {
+                count--;
+                timerEl.innerText = count;
+                if(count <= 0) {
+                    clearInterval(interval);
+                    document.getElementById('breathe-view').classList.add('hidden');
+                    document.getElementById('done-view').classList.remove('hidden');
+                }
+            }, 1000);
+        }
+
+        function resetShredder() {
+            document.getElementById('vent-input').value = '';
+            document.getElementById('shred-btn').disabled = true;
+            document.getElementById('done-view').classList.add('hidden');
+            document.getElementById('type-view').classList.remove('hidden');
+        }
+
+        function showScript() {
+            const val = document.getElementById('script-select').value;
+            const box = document.getElementById('script-display');
+            if(val) {
+                document.getElementById('script-content').innerText = `"${scripts[val]}"`;
+                box.style.display = 'block';
+            } else {
+                box.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
